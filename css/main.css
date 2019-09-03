@@ -3,13 +3,14 @@
   padding: 0;
   box-sizing: border-box;
   border: none;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .grid {
   display: grid;
   margin: 0;
   height: 100vh;
-  grid-template-columns: 1fr 3fr;
+  grid-template-columns: 1fr 2.5fr;
   grid-template-rows: 1fr 11fr;
   grid-template-areas: "header header"
                         "left main"
@@ -25,6 +26,11 @@
   align-items: center;
   justify-content: space-between;
   padding: 10px;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
 }
 
 .title-1 {
@@ -54,17 +60,27 @@
 }
 
 .search {
-  width: 200px;
+  width: 250px;
   height: 40px;
+  padding-left: 10px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+  border-radius: 0 2px 2px 0;
 }
 
 .image-search {
   display: inline-block;
   background-image: url('../image/search.svg');
+  background-size: 22px 22px;
+  background-position: center;
+  background-repeat: no-repeat;
   width: 40px;
   height: 40px;
-  background-color: #C8D3D9
+  background-color: #C8D3D9;
+  border-radius: 2px 0 0 2px;
 }
+
+/* *** LEFT_BAR STYLES *** */
 
 .left-bar {
   grid-area: left;
@@ -72,43 +88,62 @@
   text-align: center;
 }
 
-.left-bar-bottom {
- border-top: 1px solid #4B6E81;
+.left-bar-top {
+ padding: 20px 0 ;
 }
 
-.content {
-  grid-area: main;
-  background-color: #F2F6F7;
+.left-bar-bottom {
+ border-top: 1px solid #4B6E81;
+ padding-top: 20px;
 }
+
 .add-button {
   background-color: #1F1F3D;
   color: #FFFFFF;
-  height:30px;
-  font-weight: bold;
+  height: 40px;
+  font-weight: 100;
   position: absolute;
+  font-size: -webkit-xxx-large;
+  margin-left: -39px;
+  width: 39px;
+  border-radius: 2px;
 }
+
+.add-button-text {
+  position: relative;
+  top: -14px;
+}
+
 .blue-button {
   background-color: #1F1F3D;
   color: #FFFFFF;
-  height:30px;
+  height: 40px;
   font-weight: bold;
   margin-top: 10px;
-  width: 85%;
+  margin-bottom: 15px;
+  width: 95%;
+  border-radius: 2px;
+  font-size: 18px;
 }
 
-input {
-  height: 29px;
-}
 
 .left-input {
-  width: 85%;
+  width: 95%;
+  height: 40px;
+  border-radius: 2px;
+  border: 1px solid #1f203d;
+  margin-bottom: 10px;
 }
+
 
 .text-left {
   text-align: left;
-  width: 85%;
+  width: 95%;
   margin: auto;
   color: #C6D3D8;
+  font-size: 14px;
+  margin-top: 15px;
+  margin-bottom: 5px;
 }
 
 .display-block {
@@ -118,4 +153,14 @@ input {
 .margin-auto {
   margin-left: auto;
   margin-right: auto;
+}
+
+/* *** CONTENT STYLES *** */
+
+.content {
+  grid-area: main;
+  background-color: #F2F6F7;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: center;
 }

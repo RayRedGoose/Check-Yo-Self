@@ -9,14 +9,14 @@
   <body class="grid">
     <header class="header">
       <h1 class="title-1"> YO'</h1>
-      <label for="search-input" class="search-input__label"><span class="image-search"></span><input id='search-input' class="search" type="text" name="" value=""></label> 
+      <label for="search-input" class="search-input__label"><span class="image-search"></span><input id='search-input' class="search" type="text" placeholder="Search"></label>
     </header>
     <aside class="left-bar">
-      <section class="">
+      <section class="left-bar-top">
         <p class="text-left">Task Title</p>
         <input class="margin-auto left-input" type="text" name="" value="">
         <p class="text-left">Task Item</p>
-        <input class="margin-auto left-input" type="text" name="" value=""> <button class="add-button" type="button" name="button">+</button>
+        <input class="margin-auto left-input" type="text" name="" value=""> <button class="add-button" type="button" name="button"><span class="add-button-text">+</span></button>
         <button class="blue-button display-block margin-auto" type="button" name="button">Make Task List</button>
         <button class="blue-button display-block margin-auto" type="button" name="button">Clear All</button>
       </section>
@@ -25,29 +25,29 @@
       </section>
     </aside>
     <main class="content">
-      <article class="">
-        <header>
-          <h3>Task Title</h3>
+      <article class="task-card">
+        <header class="task-card__header">
+          <h3 class="task-card__title">Task Title</h3>
         </header>
-        <section>
+        <section class="task-card__content">
 
         </section>
-        <footer>
-          <img src="" alt="">
+        <footer class="task-card__footer">
+          <img src="./image/urgent.svg" alt="">
           <button type="button" name="button">X</button>
         </footer>
       </article>
-      <article class="">
-        <header>
-          <h3>Task Title</h3>
+      <article class="task-card">
+        <header class="task-card__header">
+          <h3 class="task-card__title">Task Title</h3>
         </header>
-        <section>
-          <input type="radio" name="" value=""> Placeholder 1<br>
-          <input type="radio" name="" value=""> Placeholder 2<br>
-          <input type="radio" name="" value=""> Placeholder 3
+        <section class="task-card__content">
+          <input type="checkbox" name="" value=""> Placeholder 1<br>
+          <input type="checkbox" name="" value=""> Placeholder 2<br>
+          <input type="checkbox" name="" value=""> Placeholder 3
         </section>
-        <footer>
-          <img src="" alt="">
+        <footer class="task-card__footer">
+          <img src="./image/urgent-active.svg" alt="">
           <button type="button" name="button">X</button>
         </footer>
       </article>
