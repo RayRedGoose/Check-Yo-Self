@@ -167,7 +167,13 @@ body {
   margin-right: auto;
 }
 
+.task-list-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
 .task-list {
+  width: 95%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -175,21 +181,28 @@ body {
 
 .task-item {
   color: #fff;
+  display: flex;
   font-size: 18px;
   list-style-type: none;
   margin-bottom: 5px;
-  margin-left: 10px;
+  text-align: left;
+  padding: 10px 0;
 }
 
 .task-item::before {
   content: "";
-  width: 20px;
-  height: 20px;
+  width: 25px !important;
+  height: 25px;
   display: inline-block;
   background-color: #fff;
   background-image: url('../image/delete.svg');
-  border-radius: 10px;
+  background-size: cover;
+  border-radius: 25px;
   margin-right: 10px;
+}
+
+.item-text {
+  width: 82%;
 }
 
 .error {
@@ -242,7 +255,7 @@ h3 {
 .task-card__content {
   display: flex;
   flex-direction: column;
-  padding: 20px 10px 10px;
+  padding: 20px;
 }
 
 .checkbox {
@@ -252,6 +265,7 @@ h3 {
 .label-checkbox {
   font-size: 18px;
   margin-bottom: 20px;
+  display: flex;
 }
 
 .label-checkbox--checked {
@@ -264,29 +278,24 @@ h3 {
 .label-checkbox::before {
   content: '';
   background-image: url('../image/checkbox.svg');
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
   display: inline-block;
-  border-radius: 8px;
+  border-radius: 15px;
   margin-right: 10px;
   vertical-align: middle;
 }
 
-.label-checkbox--checked::before {
-  content: '';
-  background-image: url('../image/checkbox-active.svg');
-  width: 20px;
-  height: 20px;
-  display: inline-block;
-  border-radius: 8px;
-  margin-right: 10px;
-  vertical-align: middle;
-}
-
-.checkbox:checked + .label-checkbox::before,
-.checkbox:checked + .label-checkbox--checked::before {
+.checkbox:checked + .label-checkbox::before {
   background-image: url('../image/checkbox-active.svg');
   background-color: #fff;
+}
+
+.checkbox:checked + .label-checkbox {
+  color: #3c6577;
+  font-size: 18px;
+  font-style: italic;
+  margin-bottom: 20px;
 }
 
 .task-card__footer {

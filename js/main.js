@@ -12,7 +12,7 @@ document.querySelector('.add-button-text').addEventListener('click', function() 
     taskArray.forEach(function(element) {
       document.querySelector('.task-list').appendChild(li);
       li.classList.add('task-item');
-      li.innerHTML = `${element}`;
+      li.innerHTML = `<p class='item-text'>${element}</p>`;
       document.querySelector('.make-task-list-button').disabled = false;
     });
 }
@@ -55,7 +55,7 @@ function createTaskCard() {
     var div = document.createElement('div');
     var randomId = Math.floor(Math.random() * 1000000);
     document.querySelector(`#task-card-${random}`).appendChild(div);
-    div.innerHTML = `<input id='list-${randomId}' class="checkbox" type="checkbox"><label class='label-checkbox' for="list-${randomId}">${element}</label>`;
+    div.innerHTML = `<input id='list-${randomId}' class="checkbox" type="checkbox"><label class='label-checkbox' for="list-${randomId}"><p class='item-text'>${element}</p></label>`;
   });
 
   taskArray = [];
@@ -81,21 +81,6 @@ document.querySelector('.left-bar').addEventListener('input', function(event){
       document.querySelector('.make-task-list-button').disabled = true;
       document.querySelector('#clear-all').disabled = true;
 
-  }
-})
-
-
-document.querySelector('.content').addEventListener('click', function(event) {
-  event.preventDefault();
-  if (event.target.classList.contains('label-checkbox--checked')) {
-    event.target.classList.remove('label-checkbox--checked');
-    event.target.classList.add('label-checkbox');
-
-  }
-
-  if (event.target.classList.contains('label-checkbox')) {
-    event.target.classList.add('label-checkbox--checked');
-    event.target.classList.remove('label-checkbox');
   }
 })
 
