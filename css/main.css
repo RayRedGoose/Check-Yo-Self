@@ -135,7 +135,6 @@ body {
   margin-bottom: 10px;
 }
 
-
 .text-left {
   text-align: left;
   width: 95%;
@@ -163,4 +162,129 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   justify-items: center;
+}
+
+h3 {
+  margin: 0;
+}
+
+.task-card {
+  background-color: #fafdff;
+  border: 2px solid #c7d3d8;
+  font-family: 'Open Sans', sans-serif;
+  height: fit-content;
+  width: 80%;
+  margin-top: 40px;
+}
+
+.task-card__header {
+  border-bottom: 2px solid #c7d3d8;
+}
+
+.task-card__title {
+  color: #1f1f3d;
+  text-align: left;
+  font-size: 20px;
+  padding: 10px;
+}
+
+.task-card__content {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 10px 10px;
+}
+
+.checkbox {
+  display: none;
+}
+
+.label-checkbox {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.label-checkbox--checked {
+  color: #3c6577;
+  font-size: 18px;
+  font-style: italic;
+  margin-bottom: 20px;
+}
+
+.label-checkbox::before,
+.label-checkbox--checked::before {
+  content: '';
+  background-image: url('../image/checkbox.svg');
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  border-radius: 8px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.checkbox:checked + .label-checkbox::before,
+.checkbox:checked + .label-checkbox--checked::before {
+  background-image: url('../image/checkbox-active.svg');
+  background-color: #fff;
+}
+
+.task-card__footer {
+  border-top: 2px solid #c7d3d8;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.footer-image {
+  width: 30px;
+}
+
+.icons-name {
+  color: #3c6577;
+  font-family: 'Open Sans';
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.urgent-active-icon {
+  color: #b23a25;
+}
+
+.delete-icon::before,
+.urgent-icon::before,
+.urgent-active-icon::before {
+  content: "";
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 45px;
+  height: 30px;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.urgent-icon::before {
+  background-image: url('../image/urgent.svg');
+}
+
+.urgent-active-icon::before {
+  background-image: url('../image/urgent-active.svg');
+}
+
+.delete-icon::before {
+  content: "";
+  background-image: url('../image/delete.svg');
+}
+
+.delete-icon:hover::before {
+  background-image: url('../image/delete-active.svg');
+}
+
+.task-card--urgent {
+  background-color: #ffe89d;
+  border-color: #ffc30c;
+}
+
+.border--urgent {
+  border-color: #ffc30c;
 }
