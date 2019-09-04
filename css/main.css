@@ -12,6 +12,10 @@ input:focus {
   outline: none;
 }
 
+button:disabled {
+  background-color: #f3f6f7;
+  color: darkgray;
+}
 .grid {
   display: grid;
   margin: 0;
@@ -140,6 +144,8 @@ body {
   border-radius: 2px;
   border: 1px solid #1f203d;
   margin-bottom: 10px;
+  font-size: 18px;
+  padding-left: 10px;
 }
 
 .text-left {
@@ -255,10 +261,20 @@ h3 {
   margin-bottom: 20px;
 }
 
-.label-checkbox::before,
-.label-checkbox--checked::before {
+.label-checkbox::before {
   content: '';
   background-image: url('../image/checkbox.svg');
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  border-radius: 8px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.label-checkbox--checked::before {
+  content: '';
+  background-image: url('../image/checkbox-active.svg');
   width: 20px;
   height: 20px;
   display: inline-block;
