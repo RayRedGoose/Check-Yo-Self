@@ -6,6 +6,12 @@
   font-family: 'Open Sans', sans-serif;
 }
 
+label:focus,
+button:focus,
+input:focus {
+  outline: none;
+}
+
 .grid {
   display: grid;
   margin: 0;
@@ -95,6 +101,7 @@ body {
 .left-bar-bottom {
  border-top: 1px solid #4B6E81;
  padding-top: 20px;
+ padding-bottom: 20px;
 }
 
 .add-button {

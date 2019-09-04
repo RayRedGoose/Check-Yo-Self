@@ -1,0 +1,21 @@
+@media only screen and (max-width: 571px) {
+  .grid {
+    display: grid;
+    margin: 0;
+    height: 100vh;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 2fr 2fr;
+    grid-template-areas: "header"
+                          "left"
+                          "main"
+
+  }
+
+  .content {
+    grid-template-columns: 1fr;
+  }
+
+  .header {
+    flex-direction: column;
+  }
+}
