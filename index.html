@@ -15,10 +15,14 @@
     <aside class="left-bar">
       <section class="left-bar-top">
         <p class="text-left">Task Title</p>
-        <input class="margin-auto left-input" type="text" name="" value="">
+        <p class="error">Enter Task title and Task items</p>
+        <input id="task-title" class="margin-auto left-input" type="text" name="" value="">
+        <div class="task-list-wrapper">
+          <ul class="task-list"></ul>
+        </div>
         <p class="text-left">Task Item</p>
-        <input class="margin-auto left-input" type="text" name="" value=""> <button class="add-button" type="button" name="button"><span class="add-button-text">+</span></button>
-        <button class="blue-button display-block margin-auto" type="button" name="button">Make Task List</button>
+        <input class="margin-auto left-input" type="text" name="" value="" id="task-input"> <button class="add-button" type="button" name="button"><span class="add-button-text">+</span></button>
+        <button class="blue-button display-block margin-auto make-task-list-button" id="make-task-list-button" type="button" name="button">Make Task List</button>
         <button class="blue-button display-block margin-auto" type="button" name="button">Clear All</button>
       </section>
       <section class="left-bar-bottom">
@@ -26,12 +30,11 @@
       </section>
     </aside>
     <main class="content">
-      <article class="task-card">
+      <!-- <article class="task-card">
         <header class="task-card__header">
           <h3 class="task-card__title">Task Title</h3>
         </header>
         <section class="task-card__content">
-
         </section>
         <footer class="task-card__footer">
           <img src="./image/urgent.svg" alt="">
@@ -51,7 +54,7 @@
           <img src="./image/urgent-active.svg" alt="">
           <button type="button" name="button">X</button>
         </footer>
-      </article>
+      </article> -->
     </main>
   </body>
   <script src="./js/todo-list.js" charset="utf-8"></script>
