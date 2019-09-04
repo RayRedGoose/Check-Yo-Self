@@ -25,3 +25,6 @@ Ability to match/recreate a UI and create a great UX
 - A task.js file that contains a Task class. We aren’t giving you any
  requirements about what methods or properties should be on it.
 - A main.js file that contains all DOM related JavaScript
+
+
+![default](./image/checkYOself-default.png)
