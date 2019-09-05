@@ -4,7 +4,7 @@
     margin: 0;
     height: 100vh;
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr 2fr 2fr;
+    grid-template-rows: .5fr 2fr 2fr;
     grid-template-areas: "header"
                           "left"
                           "main"
@@ -17,5 +17,12 @@
 
   .header {
     flex-direction: column;
+  }
+
+  .search{
+
+  }
+  .search-input__label {
+
   }
 }

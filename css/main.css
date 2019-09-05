@@ -16,6 +16,7 @@ button:disabled {
   background-color: #f3f6f7;
   color: darkgray;
 }
+
 .grid {
   display: grid;
   margin: 0;
@@ -44,15 +45,15 @@ body {
 }
 
 .title-1 {
+  color: #FFC30A;
   font-family: 'Open Sans', sans-serif;
   font-weight: 800;
-  color: #FFC30A;
 }
 
 .title-1::before,
 .title-1::after {
-  text-transform: uppercase;
   color: white;
+  text-transform: uppercase;
 }
 
 .title-1::before {
@@ -79,6 +80,7 @@ body {
 }
 
 .image-search {
+  background-color: #C8D3D9;
   display: inline-block;
   background-image: url('../image/search.svg');
   background-size: 22px 22px;
@@ -86,15 +88,14 @@ body {
   background-repeat: no-repeat;
   width: 40px;
   height: 40px;
-  background-color: #C8D3D9;
   border-radius: 2px 0 0 2px;
 }
 
 /* *** LEFT_BAR STYLES *** */
 
 .left-bar {
-  grid-area: left;
   background-color: #58798B;
+  grid-area: left;
   text-align: center;
 }
 
@@ -139,23 +140,23 @@ body {
 
 
 .left-input {
-  width: 95%;
+  border: 1px solid #1f203d;
   height: 40px;
   border-radius: 2px;
-  border: 1px solid #1f203d;
   margin-bottom: 10px;
   font-size: 18px;
   padding-left: 10px;
+  width: 95%;
 }
 
 .text-left {
-  text-align: left;
-  width: 95%;
-  margin: auto;
   color: #C6D3D8;
+  text-align: left;
+  margin: auto;
   font-size: 14px;
   margin-top: 15px;
   margin-bottom: 5px;
+  width: 95%;
 }
 
 .display-block {
@@ -173,10 +174,11 @@ body {
 }
 
 .task-list {
-  width: 95%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  width: 95%;
+
 }
 
 .task-item {
@@ -187,18 +189,20 @@ body {
   margin-bottom: 5px;
   text-align: left;
   padding: 10px 0;
+  width: 100%;
 }
 
 .task-item::before {
+  background-color: #fff;
   content: "";
-  width: 25px !important;
   height: 25px;
   display: inline-block;
-  background-color: #fff;
   background-image: url('../image/delete.svg');
   background-size: cover;
   border-radius: 25px;
   margin-right: 10px;
+  width: 25px !important;
+
 }
 
 .item-text {
@@ -206,8 +210,8 @@ body {
 }
 
 .error {
-  display: none;
   color: #b23a25;
+  display: none;
   font-size: 18px;
   padding: 2px;
   background-color: #fff;
@@ -221,8 +225,8 @@ body {
 /* *** CONTENT STYLES *** */
 
 .content {
-  grid-area: main;
   background-color: #F2F6F7;
+  grid-area: main;
   display: grid;
   grid-template-columns: 1fr 1fr;
   justify-items: center;
@@ -339,6 +343,10 @@ h3 {
 
 .urgent-active-icon::before {
   background-image: url('../image/urgent-active.svg');
+}
+
+.urgent {
+  background-color: #b23a25;
 }
 
 .delete-icon::before {
