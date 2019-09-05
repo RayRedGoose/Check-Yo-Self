@@ -16,6 +16,7 @@ button:disabled {
   background-color: #f3f6f7;
   color: darkgray;
 }
+
 .grid {
   display: grid;
   margin: 0;
@@ -342,6 +343,10 @@ h3 {
 
 .urgent-active-icon::before {
   background-image: url('../image/urgent-active.svg');
+}
+
+.urgent {
+  background-color: #b23a25;
 }
 
 .delete-icon::before {
