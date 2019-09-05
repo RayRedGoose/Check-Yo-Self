@@ -1,18 +1,20 @@
 var taskArray = [];
+var cardArray = [];
 var cardTotal = 0;
-document.querySelector('.make-task-list-button').disabled = true;
-document.querySelector('#clear-all').disabled = true;
+// document.querySelector('.make-task-list-button').disabled = true;
+// document.querySelector('#clear-all').disabled = true;
 // function that places card from array into page
 
 //Event/Bubbles
 
-document.querySelector('.content').addEventListener('click', () => {deleteCard(event); markUrgent(event);})
+document.querySelector('.content').addEventListener('click', contentClickEvents)
 document.querySelector('.left-bar').addEventListener('click', leftBarClickFunction);
 document.querySelector('.left-bar').addEventListener('input', buttonStatus);
 
 //functions
 function contentClickEvents(event) {
-
+deleteCard(event);
+markUrgent(event);
 }
 
 function leftBarClickFunction(event) {
@@ -53,13 +55,19 @@ function deleteTaskItem(target) {
 }
 
 function deleteCard(event) {
-  for (var i = 1; i <= document.querySelectorAll('.task-card').length; i++) {
-   if (event.target.classList.contains('delete-icon') && document.querySelectorAll(`.list-${i}`).length === document.querySelectorAll(`.list-${i}:checked`).length) {
+  for (var i = 1; i <= cardTotal; i++) {
+   if (event.target.classList.contains('delete-icon') && document.querySelectorAll(`.list-${i}`).length === document.querySelectorAll(`.list-${i}:checked`).length && document.querySelectorAll(`.list-${i}:checked`).length > 0) {
      event.path[2].remove();
    }
  }
-}
 
+//  for (var i = 0; i <= document.querySelectorAll('.task-card').length; i++) {
+//   if (document.querySelectorAll('.task-card')[i].innerHTML.includes(cardArray[i].random)
+// ) {
+//     cardArray[i].remove;
+//   }
+// }
+}
 function markUrgent(event) {
   for (var i = 1; i <= document.querySelectorAll('.urgent-icon').length; i++) {
    if (event.target.classList.contains('urgent-icon') && event.path[2].classList.contains('urgent') != true) {
@@ -99,7 +107,7 @@ function clearInputsAfterCardCreation(target) {
   if (target.classList.contains('make-task-list-button')) {
     checkEmptyInputs();
     if (document.querySelector('#task-title').value != "" && document.querySelector('.task-list').innerHTML != "") {
-      createTaskCard();
+      createTaskCard(event);
     }
     clearAll()
     disableMakeAndClearButtons()
@@ -111,13 +119,17 @@ function disableMakeAndClearButtons() {
   document.querySelector('#clear-all').disabled = true;
 }
 
-function createTaskCard() {
-  cardTotal += 1;
-  var random = Math.floor(Math.random() * 10000000);
+function createTaskCard(event) {
+  console.log(event)
+  cardTotal ++;
+  var random = Math.floor(Date.now());
   var taskTitle =  document.getElementById('task-title').value;
   var article = document.createElement('article');
   article.classList.add('task-card');
   var div = document.createElement('div');
+
+  var card = new Cards(taskTitle, taskArray, random);
+  cardArray.push(card)
 
   document.querySelector('.content').appendChild(article);
   article.innerHTML = `
@@ -132,7 +144,7 @@ function createTaskCard() {
 
   taskArray.forEach(function(element) {
     var div = document.createElement('div');
-    var randomId = Math.floor(Math.random() * 1000000);
+    var randomId = Math.ceil(Date.now() + Math.floor(Math.random() * 1000000));
     document.querySelector(`#task-card-${random}`).appendChild(div);
     div.innerHTML = `<input id='list-${randomId}' class="checkbox list-${cardTotal}" type="checkbox"><label class='label-checkbox' for="list-${randomId}"><p class='item-text'>${element}</p></label>`;
   });
