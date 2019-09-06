@@ -82,6 +82,26 @@ function deleteCard(target) {
   }
 }
 
+function markUrgent(target) {
+  var counter = Number(target.id);
+  var indexOfCard = cardArray.findIndex(x=>x.counter === counter);
+  var card = cardArray[indexOfCard];
+  if (target.classList.contains('urgent-active-icon') && card.urgent === true) {
+    removeStylesForUrgent(card.counter);
+    card.updateToDo();
+  } else {
+    markRegular(target, card);
+  }
+}
+
+function markRegular(target, card) {
+  if (target.classList.contains('urgent-icon') && card.urgent === false) {
+    addStylesForUrgent(card.counter);
+    console.log(target.classList.contains('urgent-icon') && !card.urgent);
+    card.updateToDo();
+  }
+}
+
 function hideColumn(){
   var column = document.querySelector('.column-one');
   if (column.innerHTML == "") {
@@ -89,13 +109,13 @@ function hideColumn(){
   }
 }
 
-function markUrgent(target) {
-  var counter = Number(target.id);
-  var indexOfCard = cardArray.findIndex(x=>x.counter === counter);
-  if (target.classList.contains('urgent-icon') && !cardArray[indexOfCard].urgent) {
-    cardArray[indexOfCard].makeUrgent();
-  }
-}
+// function markUrgent(target) {
+//   var counter = Number(target.id);
+//   var indexOfCard = cardArray.findIndex(x=>x.counter === counter);
+//   if (target.classList.contains('urgent-icon') && !cardArray[indexOfCard].urgent) {
+//     cardArray[indexOfCard].makeUrgent();
+//   }
+// }
 
 function createTaskByClick(target) {
   if (target.classList.contains('add-button-text')) {
@@ -138,14 +158,50 @@ function disableMakeAndClearButtons() {
   document.querySelector('#clear-all').disabled = true;
 }
 
-function createTaskCard(event) {
-  var taskTitle =  document.getElementById('task-title').value;
-  var newCard = new ToDo(taskTitle);
+function createTaskCard() {
+  var taskTitleInput = document.querySelector('#task-title');
+  var newCard = new ToDo(taskTitleInput.value);
   newCard.tasks = taskArray;
-  newCard.createCard();
-  newCard.createCheckbox();
+  createBody(newCard)
+  createCheckbox(newCard)
   cardArray.push(newCard);
   taskArray = [];
+}
+
+function defineStructure(card) {
+  var cardStructure = `
+  <header class="task-card__header task-card-${card.counter}__header">
+        <h3 class="task-card__title">${card.title}</h3>
+      </header>
+      <section id='task-card-${card.id}-${card.counter}' class="task-card__content"></section>
+      <footer class="task-card__footer task-card-${card.counter}__footer">
+        <p id='${card.counter}' class="icons-name urgent-icon urgent-icon-${card.counter}">Urgent</p>
+        <p id='${card.counter}' class="icons-name delete-icon">Delete</p>
+      </footer>`;
+  return cardStructure;
+}
+
+function createBody(card) {
+  var content;
+  if ((card.counter % 2) == 0) {
+    content = document.querySelector('.column-two');
+  } else {
+    content = document.querySelector('.column-one');
+    content.style.display = 'flex';
+  }
+  var article = document.createElement('article');
+  content.appendChild(article);
+  article.classList.add(`task-card`);
+  article.classList.add(`task-card-${card.counter}`);
+  article.innerHTML = defineStructure(card);
+}
+
+function createCheckbox(card) {
+  for (var i = 0; i < card.tasks.length; i++) {
+    var div = document.createElement('div');
+    document.querySelector(`#task-card-${card.id}-${card.counter}`).appendChild(div);
+    div.innerHTML = `<input id='list-${card.id}-${i}-${card.counter}' class="checkbox" type="checkbox"><label class='label-checkbox' for="list-${card.id}-${i}-${card.counter}"><p class='item-text'>${card.tasks[i]}</p></label>`;
+  }
 }
 
 function clearAllByClick(target) {
