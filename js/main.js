@@ -13,8 +13,9 @@ document.querySelector('.left-bar').addEventListener('input', buttonStatus);
 
 //functions
 function contentClickEvents(event) {
-deleteCard(event);
-markUrgent(event);
+  deleteCard(event.target);
+  clickOnTusk(event.target);
+  markUrgent(event.target);
 }
 
 function leftBarClickFunction(event) {
@@ -54,29 +55,67 @@ function deleteTaskItem(target) {
   }
 }
 
-function deleteCard(event) {
-  for (var i = 1; i <= cardTotal; i++) {
-   if (event.target.classList.contains('delete-icon') && document.querySelectorAll(`.list-${i}`).length === document.querySelectorAll(`.list-${i}:checked`).length && document.querySelectorAll(`.list-${i}:checked`).length > 0) {
-     event.path[2].remove();
-   }
- }
+function clickOnTusk(target) {
+  if (target.classList.contains('checkbox') && document.querySelector(`#${target.id}:checked`)) {
+    var counter = Number(target.id.replace(/-/g, " ").substring(target.id.length - 1));
+    var indexOfCard = cardArray.findIndex(x=>x.counter === counter);
+    cardArray[indexOfCard].checkedTasks.push(target.id);
+  }
+  if (target.classList.contains('checkbox') && !document.querySelector(`#${target.id}:checked`)) {
+    var counter = Number(target.id.replace(/-/g, " ").substring(target.id.length - 1));
+    var indexOfCard = cardArray.findIndex(x=>x.counter === counter);
+    var index = cardArray[indexOfCard].checkedTasks.indexOf(target.id);
+    cardArray[indexOfCard].checkedTasks.splice(index, 1);
+  }
+}
 
-//  for (var i = 0; i <= document.querySelectorAll('.task-card').length; i++) {
-//   if (document.querySelectorAll('.task-card')[i].innerHTML.includes(cardArray[i].random)
-// ) {
-//     cardArray[i].remove;
+function deleteCard(target) {
+  if (target.classList.contains('delete-icon')) {
+    var counter = Number(target.id);
+    var indexOfCard = cardArray.findIndex(x=>x.counter === counter);
+    cardArray[indexOfCard].checkAllChecked();
+    console.log(cardArray[indexOfCard].checkedTasks);
+    if (cardArray[indexOfCard].allChecked) {
+      target.closest('article').remove();
+    }
+    hideColumn();
+  }
+}
+
+function markUrgent(target) {
+  var counter = Number(target.id);
+  var indexOfCard = cardArray.findIndex(x=>x.counter === counter);
+  var card = cardArray[indexOfCard];
+  if (target.classList.contains('urgent-active-icon') && card.urgent === true) {
+    removeStylesForUrgent(card.counter);
+    card.updateToDo();
+  } else {
+    markRegular(target, card);
+  }
+}
+
+function markRegular(target, card) {
+  if (target.classList.contains('urgent-icon') && card.urgent === false) {
+    addStylesForUrgent(card.counter);
+    console.log(target.classList.contains('urgent-icon') && !card.urgent);
+    card.updateToDo();
+  }
+}
+
+function hideColumn(){
+  var column = document.querySelector('.column-one');
+  if (column.innerHTML == "") {
+    column.style.display = "none";
+  }
+}
+
+// function markUrgent(target) {
+//   var counter = Number(target.id);
+//   var indexOfCard = cardArray.findIndex(x=>x.counter === counter);
+//   if (target.classList.contains('urgent-icon') && !cardArray[indexOfCard].urgent) {
+//     cardArray[indexOfCard].makeUrgent();
 //   }
 // }
-}
-function markUrgent(event) {
-  for (var i = 1; i <= document.querySelectorAll('.urgent-icon').length; i++) {
-   if (event.target.classList.contains('urgent-icon') && event.path[2].classList.contains('urgent') != true) {
-     event.path[2].classList.add('urgent');
-   } else {
-     event.path[2].classList.remove('urgent');
-   }
- }
-}
 
 function createTaskByClick(target) {
   if (target.classList.contains('add-button-text')) {
@@ -119,38 +158,50 @@ function disableMakeAndClearButtons() {
   document.querySelector('#clear-all').disabled = true;
 }
 
-function createTaskCard(event) {
-  console.log(event)
-  cardTotal ++;
-  var random = Math.floor(Date.now());
-  var taskTitle =  document.getElementById('task-title').value;
-  var article = document.createElement('article');
-  article.classList.add('task-card');
-  var div = document.createElement('div');
-
-  var card = new Cards(taskTitle, taskArray, random);
-  cardArray.push(card)
-
-  document.querySelector('.content').appendChild(article);
-  article.innerHTML = `
-  <header class="task-card__header">
-        <h3 class="task-card__title">${taskTitle}</h3>
-      </header>
-      <section id='task-card-${random}' class="task-card__content"></section>
-      <footer class="task-card__footer">
-        <p class="icons-name urgent-icon">Urgent</p>
-        <p class="icons-name delete-icon">Delete</p>
-      </footer>`;
-
-  taskArray.forEach(function(element) {
-    var div = document.createElement('div');
-    var randomId = Math.ceil(Date.now() + Math.floor(Math.random() * 1000000));
-    document.querySelector(`#task-card-${random}`).appendChild(div);
-    div.innerHTML = `<input id='list-${randomId}' class="checkbox list-${cardTotal}" type="checkbox"><label class='label-checkbox' for="list-${randomId}"><p class='item-text'>${element}</p></label>`;
-  });
-
+function createTaskCard() {
+  var taskTitleInput = document.querySelector('#task-title');
+  var newCard = new ToDo(taskTitleInput.value);
+  newCard.tasks = taskArray;
+  createBody(newCard)
+  createCheckbox(newCard)
+  cardArray.push(newCard);
   taskArray = [];
-  document.querySelector('.task-list').innerHTML = "";
+}
+
+function defineStructure(card) {
+  var cardStructure = `
+  <header class="task-card__header task-card-${card.counter}__header">
+        <h3 class="task-card__title">${card.title}</h3>
+      </header>
+      <section id='task-card-${card.id}-${card.counter}' class="task-card__content"></section>
+      <footer class="task-card__footer task-card-${card.counter}__footer">
+        <p id='${card.counter}' class="icons-name urgent-icon urgent-icon-${card.counter}">Urgent</p>
+        <p id='${card.counter}' class="icons-name delete-icon">Delete</p>
+      </footer>`;
+  return cardStructure;
+}
+
+function createBody(card) {
+  var content;
+  if ((card.counter % 2) == 0) {
+    content = document.querySelector('.column-two');
+  } else {
+    content = document.querySelector('.column-one');
+    content.style.display = 'flex';
+  }
+  var article = document.createElement('article');
+  content.appendChild(article);
+  article.classList.add(`task-card`);
+  article.classList.add(`task-card-${card.counter}`);
+  article.innerHTML = defineStructure(card);
+}
+
+function createCheckbox(card) {
+  for (var i = 0; i < card.tasks.length; i++) {
+    var div = document.createElement('div');
+    document.querySelector(`#task-card-${card.id}-${card.counter}`).appendChild(div);
+    div.innerHTML = `<input id='list-${card.id}-${i}-${card.counter}' class="checkbox" type="checkbox"><label class='label-checkbox' for="list-${card.id}-${i}-${card.counter}"><p class='item-text'>${card.tasks[i]}</p></label>`;
+  }
 }
 
 function clearAllByClick(target) {
@@ -184,4 +235,18 @@ function clearErrorMessage(target) {
     document.querySelector('#task-input').classList.remove('error-input');
     document.querySelector('.error').style.display = "none";
   }
+}
+
+function addStylesForUrgent(counter) {
+  document.querySelector(`.task-card-${counter}`).classList.add('task-card--urgent');
+  document.querySelector(`.task-card-${counter}__header`).classList.add('border--urgent');
+  document.querySelector(`.task-card-${counter}__footer`).classList.add('border--urgent');
+  document.querySelector(`.urgent-icon-${counter}`).classList.add('urgent-active-icon');
+}
+
+function removeStylesForUrgent(counter) {
+  document.querySelector(`.task-card-${counter}`).classList.remove('task-card--urgent');
+  document.querySelector(`.task-card-${counter}__header`).classList.remove('border--urgent');
+  document.querySelector(`.task-card-${counter}__footer`).classList.remove('border--urgent');
+  document.querySelector(`.urgent-icon-${counter}`).classList.remove('urgent-active-icon');
 }

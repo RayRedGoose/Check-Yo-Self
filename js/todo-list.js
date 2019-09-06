@@ -1,7 +1,23 @@
-class Cards {
-  constructor(title, task, random) {
+class ToDo {
+  constructor(title) {
     this.title = title;
-    this.task = task;
-    this.random = `task-card-${random}` ;
+    this.id = this.title.replace(/ /g, "_");
+    this.tasks = [];
+    this.counter = cardArray.length + 1;
+    this.urgentClass = "";
+    this.activeClass = "";
+    this.checkedTasks = [];
+    this.allChecked = false;
+    this.urgent = false;
+  }
+
+  checkAllChecked() {
+    if (this.tasks.length == this.checkedTasks.length) {
+      return this.allChecked = true;
+    }
+  }
+
+  updateToDo() {
+    this.urgent = !this.urgent;
   }
 }
