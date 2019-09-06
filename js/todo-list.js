@@ -51,18 +51,14 @@ class ToDo {
   }
 
   makeUrgent() {
-    document.querySelector(`.task-card-${this.counter}`).classList.add('task-card--urgent');
-    document.querySelector(`.task-card-${this.counter}__header`).classList.add('border--urgent');
-    document.querySelector(`.task-card-${this.counter}__footer`).classList.add('border--urgent');
-    document.querySelector(`.urgent-icon-${this.counter}`).classList.add('urgent-active-icon');
-    this.urgent = true;
-  }
-
-  makeRegular() {
-    document.querySelector(`.task-card-${this.counter}`).classList.remove('task-card--urgent');
-    document.querySelector(`.task-card-${this.counter}__header`).classList.remove('border--urgent');
-    document.querySelector(`.task-card-${this.counter}__footer`).classList.remove('border--urgent');
-    document.querySelector(`.urgent-icon-${this.counter}`).classList.remove('urgent-active-icon');
-    this.urgent = false;
-  }
+    updateToDo() {
+      if (!this.urgent) {
+        addStylesForUrgent(this.counter);
+        return this.urgent = true;
+      }
+      if (this.urgent) {
+        removeStylesForUrgent(this.counter);
+        return this.urgent = false;
+      }
+    }
 }

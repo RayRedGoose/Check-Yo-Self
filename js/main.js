@@ -180,3 +180,17 @@ function clearErrorMessage(target) {
     document.querySelector('.error').style.display = "none";
   }
 }
+
+function addStylesForUrgent(counter) {
+  document.querySelector(`.task-card-${counter}`).classList.add('task-card--urgent');
+  document.querySelector(`.task-card-${counter}__header`).classList.add('border--urgent');
+  document.querySelector(`.task-card-${counter}__footer`).classList.add('border--urgent');
+  document.querySelector(`.urgent-icon-${counter}`).classList.add('urgent-active-icon');
+}
+
+function removeStylesForUrgent(counter) {
+  document.querySelector(`.task-card-${counter}`).classList.remove('task-card--urgent');
+  document.querySelector(`.task-card-${counter}__header`).classList.remove('border--urgent');
+  document.querySelector(`.task-card-${counter}__footer`).classList.remove('border--urgent');
+  document.querySelector(`.urgent-icon-${counter}`).classList.remove('urgent-active-icon');
+}
