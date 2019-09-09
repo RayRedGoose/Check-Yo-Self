@@ -4,8 +4,6 @@ class ToDo {
     this.id = this.title.replace(/ /g, "_");
     this.tasks = [];
     this.counter = cardArray.length + 1;
-    this.urgentClass = "";
-    this.activeClass = "";
     this.checkedTasks = [];
     this.allChecked = false;
     this.urgent = false;
