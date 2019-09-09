@@ -47,7 +47,7 @@ body {
 .title-1 {
   color: #FFC30A;
   font-family: 'Open Sans', sans-serif;
-  font-weight: 800;
+  font-weight: 900;
 }
 
 .title-1::before,
@@ -113,7 +113,7 @@ body {
   background-color: #1F1F3D;
   color: #FFFFFF;
   height: 40px;
-  font-weight: 100;
+  font-weight: 400;
   position: absolute;
   font-size: -webkit-xxx-large;
   margin-left: -39px;
@@ -130,7 +130,7 @@ body {
   background-color: #1F1F3D;
   color: #FFFFFF;
   height: 40px;
-  font-weight: bold;
+  font-weight: 900;
   margin-top: 10px;
   margin-bottom: 15px;
   width: 95%;
@@ -206,6 +206,7 @@ body {
 }
 
 .item-text {
+  font-weight: 100;
   width: 82%;
 }
 
@@ -323,10 +324,10 @@ h3 {
 }
 
 .icons-name {
-  color: #3c6577;
+  /* color: #3c6577;
   font-family: 'Open Sans';
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 600; */
   text-transform: uppercase;
 }
 
@@ -368,10 +369,13 @@ h3 {
 }
 
 .task-card--urgent {
-  background-color: #ffe89d !important;
-  border-color: #ffc30c !important;
+  background-color: #ffe89d;
+  border-color: #ffc30c;
+  /* background-color: #ffe89d !important; ########## DO WE NEED THE !IMPORTANT TAG*/
+  /* border-color: #ffc30c !important; ########## DO WE NEED THE !IMPORTANT TAG*/
 }
 
 .border--urgent {
-  border-color: #ffc30c !important;
+  border-color: #ffc30c;
+  /* border-color: #ffc30c !important; ########## DO WE NEED THE !IMPORTANT TAG*/
 }

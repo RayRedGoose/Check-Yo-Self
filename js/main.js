@@ -5,13 +5,13 @@ var cardTotal = 0;
 // document.querySelector('#clear-all').disabled = true;
 // function that places card from array into page
 
-//Event/Bubbles
+//####### Event/Bubbles ###########
 
 document.querySelector('.content').addEventListener('click', contentClickEvents)
 document.querySelector('.left-bar').addEventListener('click', leftBarClickFunction);
 document.querySelector('.left-bar').addEventListener('input', buttonStatus);
 
-//functions
+// ########### functions ###########
 function contentClickEvents(event) {
   deleteCard(event.target);
   clickOnTusk(event.target);
