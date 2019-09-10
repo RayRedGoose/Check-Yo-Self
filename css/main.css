@@ -379,3 +379,7 @@ h3 {
   border-color: #ffc30c;
   /* border-color: #ffc30c !important; ########## DO WE NEED THE !IMPORTANT TAG*/
 }
+
+.hidden {
+  visibility: hidden;
+}

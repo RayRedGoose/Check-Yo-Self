@@ -1,42 +1,59 @@
 var taskArray = [];
 var cardArray = [];
+var urgentCards = [];
 
 window.addEventListener('load', getCards)
 leftBar.addEventListener('input', leftBarInputActions);
 leftBar.addEventListener('click', leftBarClickActions);
 contentSide.addEventListener('click', contentClickActions);
 
+document.getElementById('search-input').addEventListener('input', function() {
+
+
+      for (var i = 0; i < cardArray.length; i++) {
+          if (cardArray[i].task === document.getElementById('search-input').value) {
+            console.log(cardArray[i])
+          }
+        }
+
+
+})
+
 /// RELOAD FUNCTION
 
 function getCards() {
   if (localStorage.length > 0) {
     fromArrayLS();
-    returnAllStyles();
+    fillUrgentArray();
+    cardArray.forEach(returnAllStyles);
   }
 }
 
-function returnAllStyles() {
-  for (var i = 0; i < cardArray.length; i++) {
-    createBody(cardArray[i]);
-    createCheckbox(cardArray[i]);
-    changeChecked(cardArray[i]);
-    returnUrgent(cardArray[i]);
+function returnAllStyles(element) {
+  createBody(element);
+  recreateChecklist(element);
+  changeChecked(element);
+  returnUrgent(element);
+}
+
+function recreateChecklist(card) {
+  for (var i = 0; i < card.tasksId.length; i++) {
+    var div = document.createElement('div');
+    document.querySelector(`.task-card-${card.id}-${card.counter}__content`).appendChild(div);
+    div.innerHTML = `<input id='${card.tasksId[i]}' class="checkbox" type="checkbox"><label class='label-checkbox' for="${card.tasksId[i]}"><p class='item-text'>${card.tasks[i]}</p></label>`;
   }
 }
 
 function changeChecked(card) {
   if (card.checkedTasks.length > 0) {
-    for (var k = 0; k < card.checkedTasks.length; k++) {
-      var id = card.checkedTasks[k];
-      document.querySelector(`#${id}`).checked = true;
-    }
+    card.checkedTasks.forEach( function(element) {
+      document.querySelector(`#${element}`).checked = true;
+    });
   }
 }
 
 function returnUrgent(card) {
-  if (card.urgent === true) {
-    addStylesForUrgent(card.counter);
-  }
+  if (card.urgent === true) addStylesForUrgent(card.counter);
 }
 /// *** EVENTS FUNCTION ***
 
@@ -53,12 +70,13 @@ function leftBarClickActions(event) {
     if (event.target == taskAddButton) createTaskList();
     if (event.target == makeCardButton) putCardToBoard();
     if (event.target.classList.contains('task-item')) removeItem(event.target);
+    if (event.target == filterUrgencyButton) filterByUrgent();
 }
 
 function contentClickActions(event) {
   if (event.target.classList.contains('checkbox')) clickOnTusk(event.target);
   if (event.target.classList.contains('delete-icon')) deleteCard(event.target);
-  if (event.target.classList.contains('urgent-icon')) markUrgent(event.target);
+  if (event.target.classList.contains('urgent-icon')) markCardAsUrgent(event.target);
 }
 
 // *** LEFT BAR INPUT FUNCTIONS ***
@@ -168,37 +186,69 @@ function choosePlace(card) {
 function createCheckbox(card) {
   for (var i = 0; i < card.tasks.length; i++) {
     var div = document.createElement('div');
+    var time = Date.now();
     document.querySelector(`.task-card-${card.id}-${card.counter}__content`).appendChild(div);
-    div.innerHTML = `<input id='list-${i}-${card.title}-${card.counter}' class="checkbox" type="checkbox"><label class='label-checkbox' for="list-${i}-${card.title}-${card.counter}"><p class='item-text'>${card.tasks[i]}</p></label>`;
+    div.innerHTML = `<input id='list-${i}-${time}' class="checkbox" type="checkbox"><label class='label-checkbox' for="list-${i}-${time}"><p class='item-text'>${card.tasks[i]}</p></label>`;
+    card.tasksId.push(`list-${i}-${time}`);
+  }
+}
+
+// filter by urgency button function
+function filterByUrgent() {
+  var cardsOnBoard = document.querySelectorAll('article');
+  if (cardArray.length === cardsOnBoard.length) keepOnlyUrgent();
+  if (cardArray.length > cardsOnBoard.length) cardArray.forEach(returnAllCards);
+}
+
+function keepOnlyUrgent() {
+  cardArray.forEach(function(element) {
+    if (element.urgent != true) {
+      document.querySelector(`.task-card-${element.counter}`).remove();
+    }
+    checkColumnOne();
+  })
+}
+
+function returnAllCards(element) {
+  if (element.urgent === false) {
+    columnOne.style.display = 'flex'
+    createBody(element);
+    recreateChecklist(element);
+    changeChecked(element);
   }
 }
 
 // *** CONTENT SIDE ACTION FUNCTIONS ***
 function clickOnTusk(target) {
-  var counter = Number(target.closest('article').id);
-  var indexOfCard = cardArray.findIndex(x=>x.counter === counter);
-  var card = cardArray[indexOfCard];
+  var card = findCard(target);
   if (card.checkedTasks.length === 0 || !card.checkedTasks.includes(`${target.id}`)) {
     card.checkedTasks.push(target.id);
   } else {
     var index = card.checkedTasks.indexOf(target.id);
     card.checkedTasks.splice(index, 1);
   }
+  card.checkAllChecked();
   lSArray();
 }
 
+// delete cards functions
 function deleteCard(target) {
-    var counter = Number(target.closest('article').id);
-    var indexOfCard = cardArray.findIndex(x=>x.counter === counter);
-    var card = cardArray[indexOfCard];
-    card.checkAllChecked();
-    if (card.allChecked) {
-      target.closest('article').remove();
-      cardArray.splice(indexOfCard, 1);
-      renewCards(indexOfCard);
-      lSArray();
-    }
-    if (columnOne.innerHTML == "") columnOne.style.display = "none";
+    var card = findCard(target);
+    var index = card.counter - 1;
+    deleteCardFromBoardAndArray(target, card, index);
+    if (cardArray.length === 0) localStorage.clear();
+    checkColumnOne();
+}
+
+function deleteCardFromBoardAndArray(target, card, index) {
+  if (card.allChecked) {
+    target.closest('article').remove();
+    cardArray.splice(index, 1);
+    if (card.urgent === true) deleteUrgent(card.counter);
+    renewCards(index);
+    lSArray();
+    disableFilter();
+  }
 }
 
 function renewCards(indexOfCard) {
@@ -222,26 +272,31 @@ function renewBody(card, oldCounter, newCounter) {
   replaceClass(`delete-icon-${oldCounter}`, `delete-icon-${newCounter}`);
 }
 
-function markUrgent(target) {
-    console.log(target.closest('article').id)
-  var counter = Number(target.closest('article').id);
-  var indexOfCard = cardArray.findIndex(x=>x.counter === counter);
-
-  var card = cardArray[indexOfCard];
+// make card urgent functions
+function markCardAsUrgent(target) {
+  var card = findCard(target);
   if (target.classList.contains('urgent-active-icon') && card.urgent === true) {
-    removeStylesForUrgent(card.counter);
-    card.updateToDo();
+    makeRegular(card)
   } else {
-    markRegular(target, card);
+    makeUrgent(target, card);
   }
   lSArray();
 }
 
-function markRegular(target, card) {
+function makeUrgent(target, card) {
   if (target.classList.contains('urgent-icon') && card.urgent === false) {
+    urgentCards.push(Number(target.closest('article').id));
     addStylesForUrgent(card.counter);
     card.updateToDo();
+    filterUrgencyButton.disabled = false;
   }
+}
+
+function makeRegular(card) {
+  removeStylesForUrgent(card.counter);
+  card.updateToDo();
+  disableFilter();
+  deleteUrgent(card.counter);
 }
 
 function addStylesForUrgent(counter) {
@@ -314,7 +369,6 @@ function lSArray() {
 }
 
 // take value from localStorage
-
 function fromArrayLS() {
   var array = JSON.parse(localStorage.getItem('array'));
   var instances = [];
@@ -331,6 +385,13 @@ function pushToArray(array) {
   array.push(value);
 }
 
+function fillUrgentArray() {
+  for (var i = 0; i < cardArray.length; i++) {
+    if (cardArray[i].urgent === true) urgentCards.push(cardArray[i]);
+  }
+  if (urgentCards.length > 0) filterUrgencyButton.disabled = false;
+}
+
 // element class operations
 function addItemClass(item, classItem) {
   document.querySelector(`${item}`).classList.add(`${classItem}`);
@@ -342,4 +403,27 @@ function removeItemClass(item, classItem) {
 
 function replaceClass(oldClass, newClass) {
   document.querySelector(`.${oldClass}`).classList.replace(oldClass, newClass);
+}
+
+// column display function
+function checkColumnOne() {
+  if (columnOne.innerHTML == "") columnOne.style.display = "none";
+}
+
+// find card
+function findCard(target) {
+  var counter = Number(target.closest('article').id);
+  var indexOfCard = cardArray.findIndex(x=>x.counter === counter);
+  var card = cardArray[indexOfCard];
+  return card;
+}
+
+// make filter button disabled
+function disableFilter() {
+  if (urgentCards.length === 0) filterUrgencyButton.disabled = true;
+}
+
+// delete from urgent array
+function deleteUrgent(value) {
+  urgentCards.splice(urgentCards.indexOf(value), 1);
 }

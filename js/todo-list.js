@@ -2,7 +2,8 @@ class ToDo {
   constructor(obj) {
     this.title = obj.title;
     this.id = obj.id || this.title.replace(/ /g, "_");
-    this.tasks = obj.tasks|| [] ;
+    this.tasks = obj.tasks|| [];
+    this.tasksId = obj.tasksId || [];
     this.checkedTasks = obj.checkedTasks || [];
     this.counter = obj.counter || cardArray.length + 1;
     this.allChecked = obj.allChecked || false;

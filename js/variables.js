@@ -7,6 +7,7 @@ var taskAddButton = document.querySelector('.add-button-text' || '.add-button');
 var taskPlusButton = document.querySelector('.add-button');
 var makeCardButton = document.querySelector('.make-task-list-button');
 var clearAllButton = document.querySelector('.clear-all-button');
+var filterUrgencyButton = document.querySelector('.filter-urgency');
 var error = document.querySelector('.error');
 // *** CONTENT SIDE ***
 var contentSide = document.querySelector('.content');
