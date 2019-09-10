@@ -1,13 +1,43 @@
 var taskArray = [];
 var cardArray = [];
 
+window.addEventListener('load', getCards)
 leftBar.addEventListener('input', leftBarInputActions);
 leftBar.addEventListener('click', leftBarClickActions);
 contentSide.addEventListener('click', contentClickActions);
 
 /// RELOAD FUNCTION
 
+function getCards() {
+  if (localStorage.length > 0) {
+    fromArrayLS();
+    returnAllStyles();
+  }
+}
 
+function returnAllStyles() {
+  for (var i = 0; i < cardArray.length; i++) {
+    createBody(cardArray[i]);
+    createCheckbox(cardArray[i]);
+    changeChecked(cardArray[i]);
+    returnUrgent(cardArray[i]);
+  }
+}
+
+function changeChecked(card) {
+  if (card.checkedTasks.length > 0) {
+    for (var k = 0; k < card.checkedTasks.length; k++) {
+      var id = card.checkedTasks[k];
+      document.querySelector(`#${id}`).checked = true;
+    }
+  }
+}
+
+function returnUrgent(card) {
+  if (card.urgent === true) {
+    addStylesForUrgent(card.counter);
+  }
+}
 /// *** EVENTS FUNCTION ***
 
 function leftBarInputActions(event) {
@@ -83,18 +113,21 @@ function removeItem(target) {
 // create ToDo card
 function putCardToBoard() {
   checkEmptyInputs();
-  if (taskTitleInput.value != "" && taskList.innerHTML != "") createTaskCard();
-  clearAllInputs();
-  disableLeftSideButtons();
+  if (taskTitleInput.value != "" && taskList.innerHTML != "") {
+    createTaskCard();
+    clearAllInputs();
+    disableLeftSideButtons();
+  }
 }
 
 function createTaskCard() {
-  var newCard = new ToDo(taskTitleInput.value);
+  var newCard = new ToDo({title: taskTitleInput.value});
   newCard.tasks = taskArray;
+  cardArray.push(newCard);
   createBody(newCard)
   createCheckbox(newCard)
-  cardArray.push(newCard);
   taskArray = [];
+  lSArray();
 }
 
 function createBody(card) {
@@ -135,9 +168,8 @@ function choosePlace(card) {
 function createCheckbox(card) {
   for (var i = 0; i < card.tasks.length; i++) {
     var div = document.createElement('div');
-    var time = Date.now();
     document.querySelector(`.task-card-${card.id}-${card.counter}__content`).appendChild(div);
-    div.innerHTML = `<input id='list-${i}-${time}' class="checkbox" type="checkbox"><label class='label-checkbox' for="list-${i}-${time}"><p class='item-text'>${card.tasks[i]}</p></label>`;
+    div.innerHTML = `<input id='list-${i}-${card.title}-${card.counter}' class="checkbox" type="checkbox"><label class='label-checkbox' for="list-${i}-${card.title}-${card.counter}"><p class='item-text'>${card.tasks[i]}</p></label>`;
   }
 }
 
@@ -146,23 +178,25 @@ function clickOnTusk(target) {
   var counter = Number(target.closest('article').id);
   var indexOfCard = cardArray.findIndex(x=>x.counter === counter);
   var card = cardArray[indexOfCard];
-  if (card.checkedTasks.length == 0 || !card.checkedTasks.includes(`${target.id}`)) {
+  if (card.checkedTasks.length === 0 || !card.checkedTasks.includes(`${target.id}`)) {
     card.checkedTasks.push(target.id);
   } else {
     var index = card.checkedTasks.indexOf(target.id);
     card.checkedTasks.splice(index, 1);
   }
-  card.checkAllChecked();
+  lSArray();
 }
 
 function deleteCard(target) {
     var counter = Number(target.closest('article').id);
     var indexOfCard = cardArray.findIndex(x=>x.counter === counter);
     var card = cardArray[indexOfCard];
+    card.checkAllChecked();
     if (card.allChecked) {
       target.closest('article').remove();
       cardArray.splice(indexOfCard, 1);
       renewCards(indexOfCard);
+      lSArray();
     }
     if (columnOne.innerHTML == "") columnOne.style.display = "none";
 }
@@ -175,6 +209,7 @@ function renewCards(indexOfCard) {
     renewBody(card, oldCounter, newCounter);
     card.counter = newCounter;
   }
+  lSArray();
 }
 
 function renewBody(card, oldCounter, newCounter) {
@@ -188,8 +223,10 @@ function renewBody(card, oldCounter, newCounter) {
 }
 
 function markUrgent(target) {
+    console.log(target.closest('article').id)
   var counter = Number(target.closest('article').id);
   var indexOfCard = cardArray.findIndex(x=>x.counter === counter);
+
   var card = cardArray[indexOfCard];
   if (target.classList.contains('urgent-active-icon') && card.urgent === true) {
     removeStylesForUrgent(card.counter);
@@ -197,6 +234,7 @@ function markUrgent(target) {
   } else {
     markRegular(target, card);
   }
+  lSArray();
 }
 
 function markRegular(target, card) {
@@ -252,7 +290,7 @@ function disableLeftSideButtons() {
 // *** ERROR FUNCTIONS ***
 
 function checkEmptyInputs() {
-  if (taskTitleInput.value == "" || taskList.innerHTML == "") showError();
+  if (taskTitleInput.value === "" || taskList.innerHTML === "") showError();
 }
 
 function showError() {
@@ -268,6 +306,24 @@ function clearErrorMessage() {
 }
 
 // *** OTHER HELPING FUNCTIONS ***
+// put array to localStorage
+function lSArray() {
+  if (cardArray != 0) {
+  localStorage.setItem('array',JSON.stringify(cardArray));
+  }
+}
+
+// take value from localStorage
+
+function fromArrayLS() {
+  var array = JSON.parse(localStorage.getItem('array'));
+  var instances = [];
+  for (var i = 0; i < array.length; i++) {
+    var card = new ToDo(array[i]);
+    instances.push(card)
+  }
+  cardArray = instances;
+}
 
 // array operations
 function pushToArray(array) {
