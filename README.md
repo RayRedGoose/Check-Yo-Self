@@ -27,21 +27,21 @@ Ability to match/recreate a UI and create a great UX
 - A main.js file that contains all DOM related JavaScript
 
 #### Default Laptop
-![default](./image/checkYOself-default.png =200px)
+![default](./image/checkYOself-default.png =200x)
 
 #### Mobile Phone
 
-![Mobile](./image/checkYOself-mobile1.png =100px)
+![Mobile](./image/checkYOself-mobile1.png =100x)
 
 
-![Mobile](./image/checkYOself-moble2.png =100px)
+![Mobile](./image/checkYOself-moble2.png =100x)
 
-![Mobile](./image/checkYOself-moble3.png =100px)
+![Mobile](./image/checkYOself-moble3.png =100x)
 
 #### Urgent Laptop
 
-![urgent](./image/checkYOself-urgetn.pnd.png =200px)
+![urgent](./image/checkYOself-urgetn.pnd.png =200x)
 
 #### With Tasks
 
-![With Tasks](./image/checkYOself-withTasks.png =200px)
+![With Tasks](./image/checkYOself-withTasks.png =200x)
