@@ -40,7 +40,7 @@ Ability to match/recreate a UI and create a great UX
 
 #### Urgent Laptop
 
-![urgent](.image/ccheckYOself-urgent.pnd.png)
+![urgent](.image/image/checkYOself-urgent.png)
 
 #### With Tasks
 
