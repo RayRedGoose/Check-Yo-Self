@@ -1,16 +1,17 @@
 class ToDo {
-  constructor(title) {
-    this.title = title;
-    this.id = this.title.replace(/ /g, "_");
-    this.tasks = [];
-    this.counter = cardArray.length + 1;
-    this.checkedTasks = [];
-    this.allChecked = false;
-    this.urgent = false;
+  constructor(obj) {
+    this.title = obj.title;
+    this.id = obj.id || this.title.replace(/ /g, "_");
+    this.tasks = obj.tasks|| [];
+    this.tasksId = obj.tasksId || [];
+    this.checkedTasks = obj.checkedTasks || [];
+    this.counter = obj.counter || cardArray.length + 1;
+    this.allChecked = obj.allChecked || false;
+    this.urgent = obj.urgent || false
   }
 
   checkAllChecked() {
-    if (this.tasks.length == this.checkedTasks.length) {
+    if (this.tasks.length === this.checkedTasks.length) {
       return this.allChecked = true;
     }
   }
