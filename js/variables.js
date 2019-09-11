@@ -14,3 +14,5 @@ var contentSide = document.querySelector('.content');
 var columnOne = document.querySelector('.column-one');
 var columnTwo = document.querySelector('.column-two');
 var deleteIcon = document.querySelector('.delete-icon');
+// *** SEARCH BAR ***
+var search = document.getElementById('search-input');

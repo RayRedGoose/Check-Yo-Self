@@ -381,5 +381,12 @@ h3 {
 }
 
 .hidden {
-  visibility: hidden;
+  display: none;
+}
+
+#search-type {
+  margin-left: auto;
+  margin-right: 10px;
+  height: 40px;
+  font-size: 16px;
 }

@@ -6,20 +6,13 @@ window.addEventListener('load', getCards)
 leftBar.addEventListener('input', leftBarInputActions);
 leftBar.addEventListener('click', leftBarClickActions);
 contentSide.addEventListener('click', contentClickActions);
-
-document.getElementById('search-input').addEventListener('input', function() {
-
-
-      for (var i = 0; i < cardArray.length; i++) {
-          if (cardArray[i].task === document.getElementById('search-input').value) {
-            console.log(cardArray[i])
-          }
-        }
-
-
-})
+search.addEventListener('input', searchType);
 
 /// RELOAD FUNCTION
+function searchType() {
+  searchTask();
+  searchTitle();
+}
 
 function getCards() {
   if (localStorage.length > 0) {
@@ -34,6 +27,51 @@ function returnAllStyles(element) {
   recreateChecklist(element);
   changeChecked(element);
   returnUrgent(element);
+}
+
+
+function searchTitle() {
+  if (document.getElementById('search-type').value === 'title' || document.getElementById('search-type').value === 'all') {
+  for (var i = 0; i < cardArray.length; i++) {
+    console.log(i);
+    for ( var k = 0;  k < cardArray[i].title.length; k++) {
+      if (cardArray[i].title[k].includes(document.getElementById('search-input').value) != true) {
+        console.log(i)
+        var id = cardArray[i].counter;
+        document.getElementById(`${id}`).classList.add('hidden')
+      }
+    }
+    for ( var k = 0;  k < cardArray[i].title.length; k++) {
+      if (cardArray[i].title[k].includes(document.getElementById('search-input').value) === true) {
+        console.log(i)
+        var id = cardArray[i].counter;
+        document.getElementById(`${id}`).classList.remove('hidden')
+      }
+    }
+ }
+}
+}
+
+function searchTask() {
+  if (document.getElementById('search-type').value === 'task' || document.getElementById('search-type').value === 'all') {
+  for (var i = 0; i < cardArray.length; i++) {
+    console.log(i);
+    for ( var k = 0;  k < cardArray[i].tasks.length; k++) {
+      if (cardArray[i].tasks[k].includes(document.getElementById('search-input').value) != true) {
+        console.log(i)
+        var id = cardArray[i].counter;
+        document.getElementById(`${id}`).classList.add('hidden')
+      }
+    }
+    for ( var k = 0;  k < cardArray[i].tasks.length; k++) {
+      if (cardArray[i].tasks[k].includes(document.getElementById('search-input').value) === true) {
+        console.log(i)
+        var id = cardArray[i].counter;
+        document.getElementById(`${id}`).classList.remove('hidden')
+      }
+    }
+ }
+}
 }
 
 function recreateChecklist(card) {
