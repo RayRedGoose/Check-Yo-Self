@@ -10,6 +10,11 @@
   <body class="grid">
     <header class="header">
       <h1 class="title-1"> YO'</h1>
+      <select id="search-type">
+        <option value="all">All</option>
+        <option value="task">Task</option>
+        <option value="title">Title</option>
+      </select>
       <label for="search-input" class="search-input__label"><span class="image-search"></span><input id='search-input' class="search" type="text" placeholder="Search"></label>
     </header>
     <aside class="left-bar">
@@ -26,7 +31,7 @@
         <button class="blue-button display-block margin-auto clear-all-button" type="button" name="button" id="clear-all" disabled>Clear All</button>
       </section>
       <section class="left-bar-bottom">
-        <button class="blue-button display-block margin-auto filter-urgency" type="button" name="button" disabled>Filter By Urgency</button>
+        <button class="blue-button display-block margin-auto filter-urgency" type="button" name="button">Filter By Urgency</button>
       </section>
     </aside>
     <main class="content">
