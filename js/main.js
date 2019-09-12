@@ -147,7 +147,9 @@ function createTaskCard() {
   newCard.tasks = taskArray;
   cardArray.push(newCard);
   createBody(newCard)
-  createCheckbox(newCard)
+  createCheckbox(newCard);
+  var cardsOnBoard = document.querySelectorAll('.task-card');
+  if (cardArray.length > cardsOnBoard.length) showAllCards(newCard);
   taskArray = [];
   lSArray();
 }
@@ -226,6 +228,16 @@ function returnAllCards(element) {
     changeChecked(element);
     filterUrgencyButton.classList.remove('urgent-active');
   }
+}
+
+function showAllCards(card) {
+  var newI = card.counter - 1;
+  var unurgent = [];
+  for (var i = 0; i < newI; i++) {
+    if (cardArray[i].urgent === false) unurgent.push(cardArray[i]);
+  }
+  unurgent.forEach(returnAllStyles);
+  filterUrgencyButton.classList.remove('urgent-active');
 }
 
 // *** CONTENT SIDE ACTION FUNCTIONS ***
