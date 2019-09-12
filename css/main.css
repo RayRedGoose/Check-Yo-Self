@@ -138,6 +138,10 @@ body {
   font-size: 18px;
 }
 
+.urgent-active {
+  background-color: #ef4a23;
+  border-color: #782616;
+}
 
 .left-input {
   border: 1px solid #1f203d;
@@ -298,6 +302,7 @@ h3 {
   border-radius: 15px;
   margin-right: 10px;
   vertical-align: middle;
+  background-repeat: no-repeat;
 }
 
 .checkbox:checked + .label-checkbox::before {
@@ -378,6 +383,114 @@ h3 {
 .border--urgent {
   border-color: #ffc30c;
   /* border-color: #ffc30c !important; ########## DO WE NEED THE !IMPORTANT TAG*/
+}
+
+.icons-name {
+  color: #3c6577;
+  font-family: 'Open Sans';
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.delete-icon:hover,
+.urgent-icon:hover,
+.urgent-active-icon {
+  color: #b23a25;
+}
+
+.delete-icon::before,
+.add-task-icon::before,
+.urgent-icon::before,
+.urgent-active-icon::before {
+  content: "";
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 45px;
+  height: 30px;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.urgent-icon::before {
+  background-image: url('../image/urgent.svg');
+}
+
+.urgent-icon:hover::before,
+.urgent-active-icon::before {
+  background-image: url('../image/urgent-active.svg') !important;
+}
+
+.urgent {
+  background-color: #b23a25;
+}
+
+.add-task-icon::before {
+  background-image: url('../image/plus.svg');
+}
+
+.add-task-icon:hover::before {
+  background-image: url('../image/plus-active.svg');
+}
+
+.add-task-active-icon::before {
+  background-image: url('../image/plus-active.svg');
+}
+
+.delete-icon::before {
+  content: "";
+  background-image: url('../image/delete.svg');
+}
+
+.delete-icon:hover::before {
+  background-image: url('../image/delete-active.svg');
+}
+
+.task-card--urgent {
+  background-color: #ffe89d;
+  border-color: #ffc30c;
+  /* background-color: #ffe89d !important; ########## DO WE NEED THE !IMPORTANT TAG*/
+  /* border-color: #ffc30c !important; ########## DO WE NEED THE !IMPORTANT TAG*/
+}
+
+.border--urgent {
+  border-color: #ffc30c;
+  /* border-color: #ffc30c !important; ########## DO WE NEED THE !IMPORTANT TAG*/
+}
+
+.input-wrapper {
+  display: flex;
+  margin: 20px;
+}
+
+#add-new-task {
+  font-size: 18px;
+  padding: 5px;
+  display: inline;
+  border: 1px solid #3c6577;
+  border-radius: 2px;
+}
+
+.new-task-btn {
+  color: #fff;
+  font-size: 24px;
+  padding: 10px 20px;
+  width: fit-content;
+  background-color: #3c6577;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.add-new-task-btn {
+  background-image: url('../image/plus-active.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.discard-changes {
+  background-image: url('../image/discard.svg');
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .hidden {

@@ -6,13 +6,10 @@ window.addEventListener('load', getCards)
 leftBar.addEventListener('input', leftBarInputActions);
 leftBar.addEventListener('click', leftBarClickActions);
 contentSide.addEventListener('click', contentClickActions);
+contentSide.addEventListener('keyup', keyupContent);
 search.addEventListener('input', searchType);
 
 /// RELOAD FUNCTION
-function searchType() {
-  searchTask();
-  searchTitle();
-}
 
 function getCards() {
   if (localStorage.length > 0) {
@@ -29,56 +26,11 @@ function returnAllStyles(element) {
   returnUrgent(element);
 }
 
-
-function searchTitle() {
-  if (document.getElementById('search-type').value === 'title' || document.getElementById('search-type').value === 'all') {
-  for (var i = 0; i < cardArray.length; i++) {
-    console.log(i);
-    for ( var k = 0;  k < cardArray[i].title.length; k++) {
-      if (cardArray[i].title[k].includes(document.getElementById('search-input').value) != true) {
-        console.log(i)
-        var id = cardArray[i].counter;
-        document.getElementById(`${id}`).classList.add('hidden')
-      }
-    }
-    for ( var k = 0;  k < cardArray[i].title.length; k++) {
-      if (cardArray[i].title[k].includes(document.getElementById('search-input').value) === true) {
-        console.log(i)
-        var id = cardArray[i].counter;
-        document.getElementById(`${id}`).classList.remove('hidden')
-      }
-    }
- }
-}
-}
-
-function searchTask() {
-  if (document.getElementById('search-type').value === 'task' || document.getElementById('search-type').value === 'all') {
-  for (var i = 0; i < cardArray.length; i++) {
-    console.log(i);
-    for ( var k = 0;  k < cardArray[i].tasks.length; k++) {
-      if (cardArray[i].tasks[k].includes(document.getElementById('search-input').value) != true) {
-        console.log(i)
-        var id = cardArray[i].counter;
-        document.getElementById(`${id}`).classList.add('hidden')
-      }
-    }
-    for ( var k = 0;  k < cardArray[i].tasks.length; k++) {
-      if (cardArray[i].tasks[k].includes(document.getElementById('search-input').value) === true) {
-        console.log(i)
-        var id = cardArray[i].counter;
-        document.getElementById(`${id}`).classList.remove('hidden')
-      }
-    }
- }
-}
-}
-
 function recreateChecklist(card) {
   for (var i = 0; i < card.tasksId.length; i++) {
     var div = document.createElement('div');
     document.querySelector(`.task-card-${card.id}-${card.counter}__content`).appendChild(div);
-    div.innerHTML = `<input id='${card.tasksId[i]}' class="checkbox" type="checkbox"><label class='label-checkbox' for="${card.tasksId[i]}"><p class='item-text'>${card.tasks[i]}</p></label>`;
+    div.innerHTML = `<input id='${card.tasksId[i]}' class="checkbox" type="checkbox"><label class='label-checkbox' for="${card.tasksId[i]}"><p class='item-text' contenteditable="true" data="${i}">${card.tasks[i]}</p></label>`;
   }
 }
 
@@ -94,6 +46,17 @@ function returnUrgent(card) {
   if (card.urgent === true) addStylesForUrgent(card.counter);
 }
 /// *** EVENTS FUNCTION ***
+
+
+function keyupContent() {
+  changeTask();
+  changeTitle();
+}
+
+function searchType() {
+  searchTask();
+  searchTitle();
+}
 
 function leftBarInputActions(event) {
   validateInputs(event.target);
@@ -115,6 +78,9 @@ function contentClickActions(event) {
   if (event.target.classList.contains('checkbox')) clickOnTusk(event.target);
   if (event.target.classList.contains('delete-icon')) deleteCard(event.target);
   if (event.target.classList.contains('urgent-icon')) markCardAsUrgent(event.target);
+  if (event.target.classList.contains('add-task-icon')) showInputForAddNewTask(event.target);
+  if (event.target.classList.contains('add-new-task-btn' || 'task-card__content')) addNewTaskToCard(event.target);
+  if (event.target.classList.contains('discard-changes')) clearInputAddNewTask(event.target);
 }
 
 // *** LEFT BAR INPUT FUNCTIONS ***
@@ -156,7 +122,7 @@ function createTuskListItems(array) {
   var li = document.createElement('li');
   taskList.appendChild(li);
   li.classList.add('task-item');
-  li.innerHTML = `<p class='item-text'>${array[array.length - 1]}</p>`;
+  li.innerHTML = `<p class='item-text' contenteditable="true">${array[array.length - 1]}</p>`;
 }
 
 // remove tasks from ToDo list
@@ -198,11 +164,15 @@ function createBody(card) {
 function defineStructure(card) {
   var cardStructure = `
   <header class="task-card__header task-card-${card.counter}__header">
-        <h3 class="task-card__title">${card.title}</h3>
+        <h3 class="task-card__title" contenteditable="true" >${card.title}</h3>
       </header>
-      <section class="task-card__content task-card-${card.id}-${card.counter}__content"></section>
+      <section class="task-card__content task-card-${card.id}-${card.counter}__content">
+
+      </section>
+      <section class="wrapper-${card.counter}"></section>
       <footer class="task-card__footer task-card-${card.counter}__footer">
         <p class="icons-name urgent-icon urgent-icon-${card.counter}">Urgent</p>
+        <p class="icons-name add-task-icon add-task-icon-${card.counter}">Add task</p>
         <p class="icons-name delete-icon delete-icon-${card.counter}" >Delete</p>
       </footer>`;
   return cardStructure;
@@ -226,7 +196,7 @@ function createCheckbox(card) {
     var div = document.createElement('div');
     var time = Date.now();
     document.querySelector(`.task-card-${card.id}-${card.counter}__content`).appendChild(div);
-    div.innerHTML = `<input id='list-${i}-${time}' class="checkbox" type="checkbox"><label class='label-checkbox' for="list-${i}-${time}"><p class='item-text'>${card.tasks[i]}</p></label>`;
+    div.innerHTML = `<input id='list-${i}-${time}' class="checkbox" type="checkbox"><label class='label-checkbox' for="list-${i}-${time}"><p contenteditable="true" data="${i}" class='item-text'>${card.tasks[i]}</p></label>`;
     card.tasksId.push(`list-${i}-${time}`);
   }
 }
@@ -243,6 +213,7 @@ function keepOnlyUrgent() {
     if (element.urgent != true) {
       document.querySelector(`.task-card-${element.counter}`).remove();
     }
+    filterUrgencyButton.classList.add('urgent-active');
     checkColumnOne();
   })
 }
@@ -253,10 +224,34 @@ function returnAllCards(element) {
     createBody(element);
     recreateChecklist(element);
     changeChecked(element);
+    filterUrgencyButton.classList.remove('urgent-active');
   }
 }
 
 // *** CONTENT SIDE ACTION FUNCTIONS ***
+function changeTask() {
+  if (event.target.classList.contains('item-text')) {
+  for (i = 0; i < cardArray.length; i++) {
+    if (parseInt(event.target.closest('article').id) === cardArray[i].counter) {
+      cardArray[i].tasks[event.target.getAttribute('data')] = event.target.innerHTML;
+      lSArray();
+    }
+  }
+  }
+}
+
+  function changeTitle() {
+    if (event.target.classList.contains('task-card__title')) {
+    for (i = 0; i < cardArray.length; i++) {
+      if (parseInt(event.target.closest('article').id) === cardArray[i].counter) {
+        cardArray[i].title = event.target.innerHTML;
+        lSArray();
+      }
+    }
+    }
+  }
+
+
 function clickOnTusk(target) {
   var card = findCard(target);
   if (card.checkedTasks.length === 0 || !card.checkedTasks.includes(`${target.id}`)) {
@@ -285,7 +280,7 @@ function deleteCardFromBoardAndArray(target, card, index) {
     if (card.urgent === true) deleteUrgent(card.counter);
     renewCards(index);
     lSArray();
-    disableFilter();
+    if (urgentCards.length === 0) filterUrgencyButton.classList.remove('urgent-active');
   }
 }
 
@@ -326,14 +321,12 @@ function makeUrgent(target, card) {
     urgentCards.push(Number(target.closest('article').id));
     addStylesForUrgent(card.counter);
     card.updateToDo();
-    filterUrgencyButton.disabled = false;
   }
 }
 
 function makeRegular(card) {
   removeStylesForUrgent(card.counter);
   card.updateToDo();
-  disableFilter();
   deleteUrgent(card.counter);
 }
 
@@ -351,6 +344,88 @@ function removeStylesForUrgent(counter) {
   removeItemClass(`.urgent-icon-${counter}`, 'urgent-active-icon');
 }
 
+// Search Functions
+
+function searchTitle() {
+  if (document.getElementById('search-type').value === 'title' || document.getElementById('search-type').value === 'all') {
+    for (var i = 0; i < cardArray.length; i++) {
+        if (cardArray[i].title.includes(document.getElementById('search-input').value) != true) {
+          var id = cardArray[i].counter;
+          document.getElementById(`${id}`).classList.add('hidden');
+        } else {
+          var id = cardArray[i].counter;
+          document.getElementById(`${id}`).classList.remove('hidden')
+        }
+    }
+  }
+}
+
+function searchTask() {
+  if (document.getElementById('search-type').value === 'task' || document.getElementById('search-type').value === 'all') {
+  for (var i = 0; i < cardArray.length; i++) {
+    for ( var k = 0;  k < cardArray[i].tasks.length; k++) {
+      if (cardArray[i].tasks[k].includes(document.getElementById('search-input').value) != true) {
+        var id = cardArray[i].counter;
+        document.getElementById(`${id}`).classList.add('hidden')
+      }
+    }
+    for ( var k = 0;  k < cardArray[i].tasks.length; k++) {
+      if (cardArray[i].tasks[k].includes(document.getElementById('search-input').value) === true) {
+        var id = cardArray[i].counter;
+        document.getElementById(`${id}`).classList.remove('hidden')
+      }
+    }
+ }
+}
+}
+
+// Add new task to card
+function showInputForAddNewTask(target) {
+  var card = findCard(target);
+  var parent = document.querySelector(`.wrapper-${card.counter}`);
+  var input = document.createElement('div');
+  chooseActionForAddTaskBtn(parent, input, card);
+}
+
+function chooseActionForAddTaskBtn(parent, input, card) {
+  if (document.querySelectorAll(`.input-wrapper-${card.counter}`).length < 1) {
+    createNewTaskInput(parent, input, card);
+  } else {
+    hideNewTaskInput(card)
+  }
+}
+
+function createNewTaskInput(parent, input, card) {
+  parent.appendChild(input);
+  input.classList.add('input-wrapper',`input-wrapper-${card.counter}`);
+  input.innerHTML = `
+    <input id='add-new-task' class='add-new-task add-new-task-${card.counter}' type="text">
+    <button class='new-task-btn add-new-task-btn add-new-task-btn-${card.counter}'></button>
+    <button class='new-task-btn discard-changes discard-changes-btn-${card.counter}'></button>`
+  document.querySelector(`.add-task-icon-${card.counter}`).classList.add('add-task-active-icon');
+}
+
+function hideNewTaskInput(card) {
+  document.querySelector(`.input-wrapper-${card.counter}`).remove();
+  document.querySelector(`.add-task-icon-${card.counter}`).classList.remove('add-task-active-icon');
+}
+
+function addNewTaskToCard(target) {
+  var card = findCard(target);
+  var newTask = document.querySelector(`.add-new-task-${card.counter}`).value;
+  if (newTask != "") createBodyForOneNewTask(newTask, card);
+  lSArray();
+  resetForm(target, card);
+}
+
+function createBodyForOneNewTask(newTask, card) {
+  var div = document.createElement('div');
+  var time = Date.now();
+  document.querySelector(`.task-card-${card.id}-${card.counter}__content`).appendChild(div);
+  div.innerHTML = `<input id='list-${card.tasks.length}-${time}' class="checkbox" type="checkbox"><label class='label-checkbox' for="list-${card.tasks.length}-${time}"><p class='item-text' contenteditable="true">${newTask}</p></label>`;
+  card.tasks.push(newTask);
+  card.tasksId.push(`list-${card.tasks.length}-${time}`);
+}
 // *** CLEAR FUNCTIONS ***
 
 function clearAllInputs() {
@@ -363,6 +438,16 @@ function clearAllInputs() {
 
 function clearInput(input) {
   document.querySelector(`#${input}`).value = "";
+}
+
+function clearInputAddNewTask(target) {
+  var card = findCard(target);
+  document.querySelector(`.add-new-task-${card.counter}`).value = "";
+}
+
+function resetForm(target, card) {
+  target.closest(`.input-wrapper-${card.counter}`).remove();
+  document.querySelector(`.add-task-icon-${card.counter}`).classList.remove('add-task-active-icon');
 }
 
 // *** DISABLE AND ACTIVATE BUTTON FUNCTIONS ***
@@ -454,11 +539,6 @@ function findCard(target) {
   var indexOfCard = cardArray.findIndex(x=>x.counter === counter);
   var card = cardArray[indexOfCard];
   return card;
-}
-
-// make filter button disabled
-function disableFilter() {
-  if (urgentCards.length === 0) filterUrgencyButton.disabled = true;
 }
 
 // delete from urgent array
